@@ -112,7 +112,8 @@ export default function App() {
   const wishFormRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    fetch('/api/wishes')
+    const refreshWishes = () =>
+      fetch('/api/wishes', { cache: 'no-store' })
       .then((res) => {
         const contentType = res.headers.get('content-type') || '';
         if (res.ok && contentType.includes('application/json')) {
@@ -134,13 +135,18 @@ export default function App() {
         }
       })
       .catch(() => {
-        // Fallback / localStorage already loaded
+        // Keep the currently displayed wishes when the API is temporarily unavailable.
       });
 
+    refreshWishes();
+    const refreshTimer = window.setInterval(refreshWishes, 5000);
     const timer = window.setTimeout(() => {
       setBurstTrigger(1);
     }, 600);
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearInterval(refreshTimer);
+      window.clearTimeout(timer);
+    };
   }, []);
 
   const triggerFireworks = useCallback(() => {
@@ -202,29 +208,10 @@ export default function App() {
           return;
         }
       }
+      throw new Error('پیام در سرور ذخیره نشد.');
     } catch {
-      // Fallback to local state addition on static hosts like Vercel
+      throw new Error('پیام در سرور ذخیره نشد.');
     }
-
-    const fallbackNewWish: BirthdayWish = {
-      id: `local-${Date.now()}`,
-      senderName: payload.senderName,
-      senderRole: payload.senderRole,
-      message: payload.message,
-      sticker: payload.sticker,
-      likes: 1,
-      createdAt: 'لحظاتی پیش',
-    };
-    setWishes((prev) => {
-      const next = [fallbackNewWish, ...prev];
-      try {
-        localStorage.setItem('birthday_wishes_store', JSON.stringify(next));
-      } catch {
-        // Ignore
-      }
-      return next;
-    });
-    setBurstTrigger((prev) => prev + 1);
   };
 
   const handleLikeWish = (id: string) => {
