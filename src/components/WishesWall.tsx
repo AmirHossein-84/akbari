@@ -10,6 +10,7 @@ import {
   Send,
   Sparkles,
   ThumbsUp,
+  Trash2,
   X,
 } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -26,6 +27,7 @@ interface WishesWallProps {
     sticker: StickerType;
   }) => Promise<void>;
   onLikeWish: (id: string) => void;
+  onDeleteWish: (id: string) => Promise<void>;
   formRef: React.RefObject<HTMLDivElement | null>;
 }
 
@@ -78,6 +80,7 @@ export const WishesWall: React.FC<WishesWallProps> = ({
   likedIds,
   onAddWish,
   onLikeWish,
+  onDeleteWish,
   formRef,
 }) => {
   const [senderName, setSenderName] = useState('');
@@ -91,6 +94,7 @@ export const WishesWall: React.FC<WishesWallProps> = ({
   const [sortMode, setSortMode] = useState<WishSortMode>(WishSortMode.ALL);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedWishModal, setSelectedWishModal] = useState<BirthdayWish | null>(null);
+  const [deletingWishId, setDeletingWishId] = useState<string | null>(null);
 
   const filteredWishes = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -145,6 +149,20 @@ export const WishesWall: React.FC<WishesWallProps> = ({
       setFormError('خطایی در ثبت پیام رخ داد؛ لطفاً دوباره تلاش کنید.');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (wish: BirthdayWish) => {
+    if (!window.confirm(`پیام «${wish.senderName}» حذف شود؟`)) return;
+
+    setDeletingWishId(wish.id);
+    try {
+      await onDeleteWish(wish.id);
+      if (selectedWishModal?.id === wish.id) {
+        setSelectedWishModal(null);
+      }
+    } finally {
+      setDeletingWishId(null);
     }
   };
 
@@ -451,23 +469,34 @@ export const WishesWall: React.FC<WishesWallProps> = ({
                         </p>
                       </div>
 
-                      {/* Card Footer: Like Action + View Card */}
+                      {/* Card Footer: Like Action + Delete + View Card */}
                       <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <button
-                          type="button"
-                          onClick={() => onLikeWish(wish.id)}
-                          className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 whitespace-nowrap shrink-0 cursor-pointer ${
-                            isLiked
-                              ? 'bg-rose-50 text-rose-600 border border-rose-200'
-                              : 'bg-slate-50 text-slate-600 hover:bg-sky-50 hover:text-sky-700 hover:border-sky-200 border border-slate-200/80'
-                          }`}
-                        >
-                          <ThumbsUp className="w-3.5 h-3.5" />
-                          <span>پسندیدم</span>
-                          <span className="font-mono-num font-bold">
-                            ({wish.likes.toLocaleString('fa-IR')})
-                          </span>
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => onLikeWish(wish.id)}
+                            className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 whitespace-nowrap shrink-0 cursor-pointer ${
+                              isLiked
+                                ? 'bg-rose-50 text-rose-600 border border-rose-200'
+                                : 'bg-slate-50 text-slate-600 hover:bg-sky-50 hover:text-sky-700 hover:border-sky-200 border border-slate-200/80'
+                            }`}
+                          >
+                            <ThumbsUp className="w-3.5 h-3.5" />
+                            <span>پسندیدم</span>
+                            <span className="font-mono-num font-bold">
+                              ({wish.likes.toLocaleString('fa-IR')})
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(wish)}
+                            disabled={deletingWishId === wish.id}
+                            title="حذف پیام"
+                            className="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors disabled:opacity-50 cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
 
                         <button
                           type="button"
@@ -542,6 +571,15 @@ export const WishesWall: React.FC<WishesWallProps> = ({
                 <span>
                   همراهی با این پیام ({selectedWishModal.likes.toLocaleString('fa-IR')})
                 </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDelete(selectedWishModal)}
+                disabled={deletingWishId === selectedWishModal.id}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 font-bold cursor-pointer disabled:opacity-50"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>حذف پیام</span>
               </button>
             </div>
           </motion.div>
