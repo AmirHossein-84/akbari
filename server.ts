@@ -184,6 +184,20 @@ async function startServer() {
     res.json({ wish: target });
   });
 
+  app.delete('/api/wishes/:id', (req, res) => {
+    const store = loadStore();
+    const index = store.wishes.findIndex((wish) => wish.id === req.params.id);
+
+    if (index === -1) {
+      res.status(404).json({ error: 'پیام مورد نظر یافت نشد.' });
+      return;
+    }
+
+    store.wishes.splice(index, 1);
+    saveStore(store);
+    res.json({ wishes: store.wishes, celebrationCount: store.celebrationCount });
+  });
+
   app.post('/api/ceremony/celebrate', (_req, res) => {
     const store = loadStore();
     store.celebrationCount += 1;

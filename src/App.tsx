@@ -252,6 +252,23 @@ export default function App() {
     fetch(`/api/wishes/${id}/like`, { method: 'POST' }).catch(() => {});
   };
 
+  const handleDeleteWish = async (id: string) => {
+    const response = await fetch(`/api/wishes/${id}`, { method: 'DELETE' });
+    if (!response.ok) {
+      throw new Error('Unable to delete wish');
+    }
+
+    setWishes((prev) => {
+      const next = prev.filter((wish) => wish.id !== id);
+      try {
+        localStorage.setItem('birthday_wishes_store', JSON.stringify(next));
+      } catch {
+        // Ignore
+      }
+      return next;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900 relative selection:bg-rose-100 selection:text-rose-700">
       {/* Joyful Colorful Confetti & Fireworks Canvas */}
@@ -688,6 +705,7 @@ export default function App() {
           likedIds={likedIds}
           onAddWish={handleAddWish}
           onLikeWish={handleLikeWish}
+          onDeleteWish={handleDeleteWish}
           formRef={wishFormRef}
         />
       </main>
