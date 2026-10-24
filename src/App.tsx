@@ -19,7 +19,7 @@ const FALLBACK_WISHES: BirthdayWish[] = [
     senderName: 'سارا محمدی',
     senderRole: 'تیم محصول و طراحی',
     message:
-      'آقای اکبری عزیز، تولدتون هزاران بار مبارک! حضور گرم، آرامش مثال‌زدنی و تجربه‌ای که همیشه بی‌دریغ در اختیار بچه‌های تیم می‌گذارید، کار کردن کنار شما رو به یکی از بهترین بخش‌های شرکت تبدیل کرده. براتون سالی پر از سلامتی و موفقیت‌های بزرگ آرزو می‌کنم.',
+      'آقای رضا اکبرزاده عزیز، تولدتون هزاران بار مبارک! حضور گرم، آرامش مثال‌زدنی و تجربه‌ای که همیشه بی‌دریغ در اختیار بچه‌های تیم می‌گذارید، کار کردن کنار شما رو به یکی از بهترین بخش‌های شرکت تبدیل کرده. براتون سالی پر از سلامتی و موفقیت‌های بزرگ آرزو می‌کنم.',
     sticker: 'crown',
     likes: 24,
     createdAt: '۱ ساعت پیش',
@@ -29,7 +29,7 @@ const FALLBACK_WISHES: BirthdayWish[] = [
     senderName: 'امیرحسین رضایی',
     senderRole: 'تیم فنی و مهندسی',
     message:
-      'زادروزتون فرخنده آقای اکبری! هر وقت پروژه به چالش سختی خورده، یک مشورت کوتاه با شما کافی بوده تا بهترین راه‌حل پیدا بشه. واقعاً ستون اصلی تیم ما هستید. امیدوارم همیشه لبتون خندون و دلتون شاد باشه.',
+      'زادروزتون فرخنده آقای رضا اکبرزاده! هر وقت پروژه به چالش سختی خورده، یک مشورت کوتاه با شما کافی بوده تا بهترین راه‌حل پیدا بشه. واقعاً ستون اصلی تیم ما هستید. امیدوارم همیشه لبتون خندون و دلتون شاد باشه.',
     sticker: 'trophy',
     likes: 19,
     createdAt: '۲ ساعت پیش',
@@ -49,7 +49,7 @@ const FALLBACK_WISHES: BirthdayWish[] = [
     senderName: 'مهدی فرهادی',
     senderRole: 'تیم توسعه کسب‌وکار',
     message:
-      'آقای اکبری گرامی، تولدتون مبارک! داشتن همکاری به باصلابتی و خوش‌فکری شما یک امتیاز بزرگ برای کل مجموعه‌ست. همیشه سلامت، پرانرژی و برقرار باشید.',
+      'آقای رضا اکبرزاده گرامی، تولدتون مبارک! داشتن همکاری به باصلابتی و خوش‌فکری شما یک امتیاز بزرگ برای کل مجموعه‌ست. همیشه سلامت، پرانرژی و برقرار باشید.',
     sticker: 'rocket',
     likes: 14,
     createdAt: '۴ ساعت پیش',
@@ -69,7 +69,7 @@ const FALLBACK_WISHES: BirthdayWish[] = [
     senderName: 'سینا نادری',
     senderRole: 'تیم فنی و زیرساخت',
     message:
-      'آقای اکبری عزیز، تولدتون کلی مبارک باشه! به امید سال‌های طولانی همکاری کنار هم و جشن گرفتن موفقیت‌های بیشتر در کنار شما.',
+      'آقای رضا اکبرزاده عزیز، تولدتون کلی مبارک باشه! به امید سال‌های طولانی همکاری کنار هم و جشن گرفتن موفقیت‌های بیشتر در کنار شما.',
     sticker: 'cake',
     likes: 12,
     createdAt: '۶ ساعت پیش',
@@ -79,7 +79,7 @@ const FALLBACK_WISHES: BirthdayWish[] = [
 export default function App() {
   const [wishes, setWishes] = useState<BirthdayWish[]>(() => {
     try {
-      const saved = localStorage.getItem('akbari_wishes_store');
+      const saved = localStorage.getItem('birthday_wishes_store');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -93,7 +93,7 @@ export default function App() {
   });
   const [celebrationCount, setCelebrationCount] = useState<number>(() => {
     try {
-      const saved = localStorage.getItem('akbari_celebration_count');
+      const saved = localStorage.getItem('birthday_celebration_count');
       return saved ? Number(saved) || 48 : 48;
     } catch {
       return 48;
@@ -101,7 +101,7 @@ export default function App() {
   });
   const [likedIds, setLikedIds] = useState<string[]>(() => {
     try {
-      const saved = localStorage.getItem('akbari_liked_wishes');
+      const saved = localStorage.getItem('birthday_liked_wishes');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -124,7 +124,7 @@ export default function App() {
         if (data && Array.isArray(data.wishes)) {
           setWishes(data.wishes);
           try {
-            localStorage.setItem('akbari_wishes_store', JSON.stringify(data.wishes));
+            localStorage.setItem('birthday_wishes_store', JSON.stringify(data.wishes));
           } catch {
             // Ignore
           }
@@ -149,7 +149,7 @@ export default function App() {
     setCelebrationCount((prev) => {
       const next = prev + 1;
       try {
-        localStorage.setItem('akbari_celebration_count', String(next));
+        localStorage.setItem('birthday_celebration_count', String(next));
       } catch {
         // Ignore
       }
@@ -189,7 +189,7 @@ export default function App() {
           setWishes((prev) => {
             const next = [data.wish, ...prev];
             try {
-              localStorage.setItem('akbari_wishes_store', JSON.stringify(next));
+              localStorage.setItem('birthday_wishes_store', JSON.stringify(next));
             } catch {
               // Ignore
             }
@@ -218,7 +218,7 @@ export default function App() {
     setWishes((prev) => {
       const next = [fallbackNewWish, ...prev];
       try {
-        localStorage.setItem('akbari_wishes_store', JSON.stringify(next));
+        localStorage.setItem('birthday_wishes_store', JSON.stringify(next));
       } catch {
         // Ignore
       }
@@ -234,7 +234,7 @@ export default function App() {
     const updatedLiked = [...likedIds, id];
     setLikedIds(updatedLiked);
     try {
-      localStorage.setItem('akbari_liked_wishes', JSON.stringify(updatedLiked));
+      localStorage.setItem('birthday_liked_wishes', JSON.stringify(updatedLiked));
     } catch {
       // Ignore storage error
     }
@@ -242,7 +242,7 @@ export default function App() {
     setWishes((prev) => {
       const next = prev.map((w) => (w.id === id ? { ...w, likes: w.likes + 1 } : w));
       try {
-        localStorage.setItem('akbari_wishes_store', JSON.stringify(next));
+        localStorage.setItem('birthday_wishes_store', JSON.stringify(next));
       } catch {
         // Ignore
       }
@@ -268,7 +268,7 @@ export default function App() {
             href="#top"
             className="text-lg font-extrabold tracking-tight text-rose-600 whitespace-nowrap shrink-0"
           >
-            جشن تولد آقای اکبری
+            جشن تولد آقای رضا اکبرزاده
           </a>
 
           {/* Zone 2: 4 concise single-line text navigation links */}
@@ -353,7 +353,7 @@ export default function App() {
                 >
                   تولدتان هزاران بار مبارک،{' '}
                   <span className="luxury-gold-gradient-text font-extrabold">
-                    آقای اکبری عزیز!
+                    آقای رضا اکبرزاده عزیز!
                   </span>
                 </h1>
 
@@ -432,7 +432,7 @@ export default function App() {
                       به افتخار همکار عزیز و دوست‌داشتنی
                     </p>
                     <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3">
-                      جناب آقای اکبری
+                      جناب آقای رضا اکبرزاده
                     </h2>
                     <p className="text-xs text-slate-600 max-w-xs leading-[1.9] font-medium">
                       «تیمی که یک راهنمای باتجربه، صبور و خوش‌قلب در کنار خود دارد، هر روز را با
@@ -505,7 +505,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Section 01: Asymmetric Bento Grid of Mr. Akbari's Core Qualities */}
+        {/* Section 01: Asymmetric Bento Grid of Mr. Reza Akbarzadeh's Core Qualities */}
         <section id="qualities" className="py-24 md:py-32 border-t border-slate-100 bg-slate-50/50 relative">
           <div className="max-w-[1200px] mx-auto px-6">
             <motion.div
@@ -516,7 +516,7 @@ export default function App() {
               className="mb-14"
             >
               <p className="text-xs font-bold text-sky-600 tracking-wide mb-2.5">
-                ۰۱. چرا آقای اکبری برای تیم ما بی‌جایگزین هستند؟
+                ۰۱. چرا آقای رضا اکبرزاده برای تیم ما بی‌جایگزین هستند؟
               </p>
               <h2
                 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight tracking-tight"
@@ -550,7 +550,7 @@ export default function App() {
                   </h3>
                   <p className="text-sm md:text-base text-slate-600 leading-[1.9]">
                     هر زمان که تیم با مسئله‌ای تازه یا تصمیمی حساس روبه‌رو می‌شود، دیدگاه عمیق و
-                    تجربه ارزشمند آقای اکبری مسیر را روشن و هموار می‌کند. توانایی ایشان در دیدن
+                    تجربه ارزشمند آقای رضا اکبرزاده مسیر را روشن و هموار می‌کند. توانایی ایشان در دیدن
                     تصویر کلان در کنار توجه به ظرافت‌ها، استاندارد کاری کل مجموعه را ارتقا داده است.
                   </p>
                 </div>
@@ -621,7 +621,7 @@ export default function App() {
                   </h3>
                   <p className="text-sm text-slate-600 leading-[1.9]">
                     بسیاری از اعضای تیم، پیشرفت حرفه‌ای و اعتمادبه‌نفس کاری خود را مدیون راهنمایی‌ها
-                    و بازخوردهای دلسوزانه آقای اکبری هستند.
+                    و بازخوردهای دلسوزانه آقای رضا اکبرزاده هستند.
                   </p>
                 </div>
 
@@ -651,7 +651,7 @@ export default function App() {
                   </div>
 
                   <blockquote className="text-lg md:text-2xl font-extrabold text-slate-900 leading-[1.8] mb-6">
-                    «آقای اکبری عزیز، از اینکه هر روز با دانش، متانت و لبخندتان کنار ما هستید
+                    «آقای رضا اکبرزاده عزیز، از اینکه هر روز با دانش، متانت و لبخندتان کنار ما هستید
                     سپاسگزاریم. امیدواریم سال جدید زندگی‌تان سرشار از تندرستی، شادی و موفقیت‌های
                     ماندگار باشد.»
                   </blockquote>
@@ -696,7 +696,7 @@ export default function App() {
       <footer className="border-t border-slate-200/80 py-12 bg-slate-50/70">
         <div className="max-w-[1200px] mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600 font-medium">
           <div>
-            <span className="font-extrabold text-rose-600">جشن تولد آقای اکبری</span>
+            <span className="font-extrabold text-rose-600">جشن تولد آقای رضا اکبرزاده</span>
             <span className="mx-2.5 text-slate-300" aria-hidden="true">·</span>
             <span>طراحی شده با مهر و احترام توسط همکاران تیم</span>
           </div>

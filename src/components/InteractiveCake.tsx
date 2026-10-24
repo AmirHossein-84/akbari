@@ -212,7 +212,7 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
               className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight tracking-tight"
               style={{ textWrap: 'balance' }}
             >
-              شمع‌های کیک تولد آقای اکبری را فوت کنید
+              شمع‌های کیک تولد آقای رضا اکبرزاده را فوت کنید
             </h2>
           </div>
 
@@ -349,7 +349,7 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
                         className="luxury-gold-button flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-sm font-bold rounded-xl whitespace-nowrap shrink-0 cursor-pointer"
                       >
                         <Sparkles className="w-4 h-4" />
-                        <span>ثبت پیام تبریک برای آقای اکبری</span>
+                        <span>ثبت پیام تبریک برای آقای رضا اکبرزاده</span>
                       </button>
 
                       <button
@@ -415,7 +415,7 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
                     تولدت مبارک همکار عزیز!
                   </p>
                   <h4 className="text-xl md:text-2xl font-extrabold text-slate-900 mb-1.5">
-                    بهترین آرزوهای تیم بدرقه راه شماست، آقای اکبری!
+                    بهترین آرزوهای تیم بدرقه راه شماست، آقای رضا اکبرزاده!
                   </h4>
                   <p className="text-xs text-slate-600">
                     اکنون می‌توانید کیک تولد را برش بزنید یا پیام یادگاری خود را ثبت کنید.
@@ -577,7 +577,7 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
                     fontWeight="800"
                     fontFamily="Vazirmatn, sans-serif"
                   >
-                    آقای اکبری عزیز
+                    آقای رضا اکبرزاده عزیز
                   </text>
 
                   {/* Bottom Grand Tier (Warm Sunshine & Fresh Mint) */}

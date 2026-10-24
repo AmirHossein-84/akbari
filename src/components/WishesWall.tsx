@@ -46,8 +46,8 @@ const STICKER_OPTIONS: StickerOption[] = [
 ];
 
 const QUICK_TEMPLATES: string[] = [
-  'آقای اکبری عزیز، تولدتون مبارک! کار کردن در کنار همکاری به باتجربگی و خوش‌اخلاقی شما افتخار بزرگی برای همه ماست. براتون سالی پر از سلامتی و آرامش آرزو می‌کنم.',
-  'زادروزتون فرخنده آقای اکبری! ممنون که همیشه با صبوری و نگاه دقیقتون، سخت‌ترین چالش‌های تیم رو به بهترین شکل حل می‌کنید. همیشه بدرخشید.',
+  'آقای رضا اکبرزاده عزیز، تولدتون مبارک! کار کردن در کنار همکاری به باتجربگی و خوش‌اخلاقی شما افتخار بزرگی برای همه ماست. براتون سالی پر از سلامتی و آرامش آرزو می‌کنم.',
+  'زادروزتون فرخنده آقای رضا اکبرزاده! ممنون که همیشه با صبوری و نگاه دقیقتون، سخت‌ترین چالش‌های تیم رو به بهترین شکل حل می‌کنید. همیشه بدرخشید.',
   'تولدتون هزاران بار مبارک همکار درجه‌یک! امیدوارم سال جدید زندگی‌تون پر از اتفاقات فوق‌العاده، لبخندهای از ته دل و موفقیت‌های پی‌درپی باشه.',
 ];
 
@@ -177,7 +177,7 @@ export const WishesWall: React.FC<WishesWallProps> = ({
               className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight tracking-tight"
               style={{ textWrap: 'balance' }}
             >
-              پیام‌های تبریک و خاطرات تیم برای آقای اکبری
+              پیام‌های تبریک و خاطرات تیم برای آقای رضا اکبرزاده
             </h2>
           </div>
 
@@ -203,7 +203,7 @@ export const WishesWall: React.FC<WishesWallProps> = ({
               ثبت پیام تبریک جدید
             </h3>
             <p className="text-xs text-slate-600 mb-7 leading-relaxed">
-              پیام و استیکر انتخابی شما بلافاصله روی دیوار یادگاری آقای اکبری نمایش داده می‌شود.
+              پیام و استیکر انتخابی شما بلافاصله روی دیوار یادگاری آقای رضا اکبرزاده نمایش داده می‌شود.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-5" noValidate>
@@ -302,7 +302,7 @@ export const WishesWall: React.FC<WishesWallProps> = ({
                   rows={4}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="پیام تبریک، آرزوی خوب یا خاطره کاری خود با آقای اکبری را بنویسید..."
+                  placeholder="پیام تبریک، آرزوی خوب یا خاطره کاری خود با آقای رضا اکبرزاده را بنویسید..."
                   className="w-full px-4 py-3 text-sm rounded-xl bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100 transition-all leading-relaxed resize-none"
                 />
               </div>
@@ -314,7 +314,7 @@ export const WishesWall: React.FC<WishesWallProps> = ({
               {submitSuccess && (
                 <div className="flex items-center gap-2.5 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3.5">
                   <Check className="w-4 h-4 shrink-0 text-emerald-600" />
-                  <span>پیام تبریک شما با موفقیت در دیوار یادگاری آقای اکبری ثبت شد!</span>
+                  <span>پیام تبریک شما با موفقیت در دیوار یادگاری آقای رضا اکبرزاده ثبت شد!</span>
                 </div>
               )}
 
@@ -514,7 +514,7 @@ export const WishesWall: React.FC<WishesWallProps> = ({
               </div>
               <div>
                 <p className="text-xs text-rose-500 font-bold">
-                  کارت یادگاری جشن تولد آقای اکبری
+                  کارت یادگاری جشن تولد آقای رضا اکبرزاده
                 </p>
                 <h4 className="text-xl font-extrabold text-slate-900 mt-0.5">
                   از طرف: {selectedWishModal.senderName}
