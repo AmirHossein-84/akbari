@@ -77,8 +77,28 @@ const FALLBACK_WISHES: BirthdayWish[] = [
 ];
 
 export default function App() {
-  const [wishes, setWishes] = useState<BirthdayWish[]>(FALLBACK_WISHES);
-  const [celebrationCount, setCelebrationCount] = useState<number>(48);
+  const [wishes, setWishes] = useState<BirthdayWish[]>(() => {
+    try {
+      const saved = localStorage.getItem('akbari_wishes_store');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch {
+      // Ignore storage error
+    }
+    return FALLBACK_WISHES;
+  });
+  const [celebrationCount, setCelebrationCount] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('akbari_celebration_count');
+      return saved ? Number(saved) || 48 : 48;
+    } catch {
+      return 48;
+    }
+  });
   const [likedIds, setLikedIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('akbari_liked_wishes');
@@ -93,17 +113,28 @@ export default function App() {
 
   useEffect(() => {
     fetch('/api/wishes')
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => {
+        const contentType = res.headers.get('content-type') || '';
+        if (res.ok && contentType.includes('application/json')) {
+          return res.json();
+        }
+        return null;
+      })
       .then((data) => {
         if (data && Array.isArray(data.wishes)) {
           setWishes(data.wishes);
+          try {
+            localStorage.setItem('akbari_wishes_store', JSON.stringify(data.wishes));
+          } catch {
+            // Ignore
+          }
           if (typeof data.celebrationCount === 'number') {
             setCelebrationCount(data.celebrationCount);
           }
         }
       })
       .catch(() => {
-        // Fallback already loaded
+        // Fallback / localStorage already loaded
       });
 
     const timer = window.setTimeout(() => {
@@ -115,7 +146,15 @@ export default function App() {
   const triggerFireworks = useCallback(() => {
     setBurstTrigger((prev) => prev + 1);
     soundEngine.playSparkleChime();
-    setCelebrationCount((prev) => prev + 1);
+    setCelebrationCount((prev) => {
+      const next = prev + 1;
+      try {
+        localStorage.setItem('akbari_celebration_count', String(next));
+      } catch {
+        // Ignore
+      }
+      return next;
+    });
     fetch('/api/ceremony/celebrate', { method: 'POST' }).catch(() => {});
   }, []);
 
@@ -143,10 +182,19 @@ export default function App() {
         body: JSON.stringify(payload),
       });
 
-      if (response.ok) {
+      const contentType = response.headers.get('content-type') || '';
+      if (response.ok && contentType.includes('application/json')) {
         const data = await response.json();
         if (data.wish) {
-          setWishes((prev) => [data.wish, ...prev]);
+          setWishes((prev) => {
+            const next = [data.wish, ...prev];
+            try {
+              localStorage.setItem('akbari_wishes_store', JSON.stringify(next));
+            } catch {
+              // Ignore
+            }
+            return next;
+          });
           setBurstTrigger((prev) => prev + 1);
           if (typeof data.celebrationCount === 'number') {
             setCelebrationCount(data.celebrationCount);
@@ -155,7 +203,7 @@ export default function App() {
         }
       }
     } catch {
-      // Fallback to local state addition if offline
+      // Fallback to local state addition on static hosts like Vercel
     }
 
     const fallbackNewWish: BirthdayWish = {
@@ -167,7 +215,15 @@ export default function App() {
       likes: 1,
       createdAt: 'لحظاتی پیش',
     };
-    setWishes((prev) => [fallbackNewWish, ...prev]);
+    setWishes((prev) => {
+      const next = [fallbackNewWish, ...prev];
+      try {
+        localStorage.setItem('akbari_wishes_store', JSON.stringify(next));
+      } catch {
+        // Ignore
+      }
+      return next;
+    });
     setBurstTrigger((prev) => prev + 1);
   };
 
@@ -183,9 +239,15 @@ export default function App() {
       // Ignore storage error
     }
 
-    setWishes((prev) =>
-      prev.map((w) => (w.id === id ? { ...w, likes: w.likes + 1 } : w))
-    );
+    setWishes((prev) => {
+      const next = prev.map((w) => (w.id === id ? { ...w, likes: w.likes + 1 } : w));
+      try {
+        localStorage.setItem('akbari_wishes_store', JSON.stringify(next));
+      } catch {
+        // Ignore
+      }
+      return next;
+    });
 
     fetch(`/api/wishes/${id}/like`, { method: 'POST' }).catch(() => {});
   };
